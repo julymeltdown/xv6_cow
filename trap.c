@@ -78,6 +78,10 @@ trap(struct trapframe *tf)
     lapiceoi();
     break;
 
+  case T_PGFLT:
+    pagefault();
+    break;
+
   //PAGEBREAK: 13
   default:
     if(myproc() == 0 || (tf->cs&3) == 0){
@@ -109,4 +113,11 @@ trap(struct trapframe *tf)
   // Check if the process has been killed since we yielded
   if(myproc() && myproc()->killed && (tf->cs&3) == DPL_USER)
     exit();
+
+  // 31번 이상 실행시 우선순위 하나 낮추고 yield() 함수 호출
+  if(myproc() && myproc()->state == RUNNING && myproc()->exec_num > 30) {
+	  if(myproc()->priority<10)
+		  myproc()->priority++;
+	  yield();
+  }
 }
