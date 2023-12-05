@@ -8,6 +8,8 @@
     int $T_SYSCALL; \
     ret
 
+
+
 SYSCALL(fork)
 SYSCALL(exit)
 SYSCALL(wait)
@@ -29,3 +31,4 @@ SYSCALL(getpid)
 SYSCALL(sbrk)
 SYSCALL(sleep)
 SYSCALL(uptime)
+SYSCALL(getNumFreePages)
